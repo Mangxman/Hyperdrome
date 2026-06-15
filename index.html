@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hyperdrome - Complete Cosmic Website</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Font Google (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #020508;
+            overflow-x: hidden;
+        }
+
+        /* Pembungkus Latar Belakang */
+        .cosmic-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background: #02050c;
+        }
+
+        /* Layer Aurora */
+        .aurora-layer {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: radial-gradient(circle at 30% 40%, rgba(16, 185, 129, 0.22) 0%, transparent 40%),
+                        radial-gradient(circle at 70% 30%, rgba(6, 182, 212, 0.18) 0%, transparent 45%),
+                        radial-gradient(circle at 40% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(236, 72, 153, 0.12) 0%, transparent 35%);
+            filter: blur(60px);
+            opacity: 0.85;
+            animation: auroraFlow 25s infinite linear;
+        }
+
+        @keyframes auroraFlow {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.15) translate(3%, -5%); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        /* --- ANIMASI HUJAN METEOR TEBAL --- */
+        .meteor-shower {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform: rotate(-40deg);
+        }
+        .meteor {
+            position: absolute;
+            top: -100px;
+            width: 4px;
+            height: 35px;
+            background: linear-gradient(to bottom, #ffffff, rgba(34, 211, 238, 0.6), transparent);
+            border-radius: 999px;
+            filter: drop-shadow(0 0 12px rgba(6, 182, 212, 0.9));
+            animation: meteorFall 5s infinite linear;
+            opacity: 0;
+        }
+        @keyframes meteorFall {
+            0% { top: -100px; transform: translateX(0) scaleY(1); opacity: 0; }
+            5% { opacity: 1; }
+            15% { top: 120%; transform: translateX(-800px) scaleY(1.2); opacity: 0; }
+            100% { top: 120%; transform: translateX(-800px); opacity: 0; }
+        }
+
+        /* --- ANIMASI ASTRONOT MELAYANG --- */
+        .float-astronaut {
+            animation: floatAnim 6s infinite ease-in-out;
+            filter: drop-shadow(0 15px 50px rgba(6, 182, 212, 0.25));
+        }
+        @keyframes floatAnim {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-25px) rotate(2deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        /* Variasi animasi melayang koin crypto di halaman utama */
+        .float-coin-1 { animation: floatCoinKey1 5s infinite ease-in-out; filter: drop-shadow(0 10px 25px rgba(167, 139, 250, 0.25)); }
+        .float-coin-2 { animation: floatCoinKey2 6s infinite ease-in-out; filter: drop-shadow(0 10px 25px rgba(52, 211, 153, 0.25)); }
+        .float-coin-3 { animation: floatCoinKey3 5.5s infinite ease-in-out; filter: drop-shadow(0 10px 25px rgba(96, 165, 250, 0.25)); }
+        .float-coin-4 { animation: floatCoinKey4 6.5s infinite ease-in-out; filter: drop-shadow(0 10px 25px rgba(248, 113, 113, 0.25)); }
+
+        @keyframes floatCoinKey1 {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+        }
+        @keyframes floatCoinKey2 {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(-6deg); }
+        }
+        @keyframes floatCoinKey3 {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(8deg); }
+        }
+        @keyframes floatCoinKey4 {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-18px) rotate(-4deg); }
+        }
+
+        /* Efek Kursor Mengetik Berkedip */
+        .cursor-blink::after {
+            content: '|';
+            animation: blink 0.7s infinite;
+            color: #22d3ee;
+            margin-left: 4px;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Canvas Blockchain */
+        #blockchainCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.65;
+        }
+
+        .rtl { direction: rtl; }
+        html { scroll-behavior: smooth; }
+        
+        /* Canvas Game Ular */
+        #snakeGame {
+            border: 2px solid #06b6d4;
+            background-color: rgba(5, 15, 25, 0.9);
+            box-shadow: 0 0 30px rgba(6, 182, 212, 0.3);
+        }
+    </style>
+</head>
+<body class="text-white min-h-screen flex flex-col justify-between selection:bg-cyan-500 selection:text-black">
+
+    <audio id="bgMusic" loop src="music.mp3"></audio>
+
+    <div class="fixed bottom-6 right-6 z-50 flex items-center justify-center">
+        <span id="musicPing" class="absolute inline-flex h-12 w-12 rounded-full bg-cyan-500/30 opacity-0 transition-all duration-300"></span>
+        <button onclick="toggleMusic()" id="musicBtn" class="relative p-3.5 bg-gray-900/80 hover:bg-gray-800 border border-gray-800 hover:border-cyan-500/50 text-gray-400 hover:text-cyan-400 rounded-full shadow-2xl backdrop-blur-md transition duration-300 cursor-pointer">
+            <svg id="iconMute" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 9.75L19.5 12m0 0l2.25 2.25M19.5 12l2.25-2.25M19.5 12l-2.25 2.25m-10.5-6L4.5 9H1.5v6h3l4.5 3.75V5.25z"/>
+            </svg>
+            <svg id="iconPlaying" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z"/>
+            </svg>
+        </button>
+    </div>
+
+    <div class="cosmic-container">
+        <div class="aurora-layer"></div>
+        <canvas id="blockchainCanvas"></canvas>
+        <div class="meteor-shower">
+            <div class="meteor" style="left: 15%; animation-delay: 0s; animation-duration: 3.5s; background: linear-gradient(to bottom, #fff, #10b981, transparent);"></div>
+            <div class="meteor" style="left: 40%; animation-delay: 1.5s; animation-duration: 4.2s;"></div>
+            <div class="meteor" style="left: 65%; animation-delay: 3s; animation-duration: 3s; background: linear-gradient(to bottom, #fff, #f59e0b, transparent);"></div>
+            <div class="meteor" style="left: 85%; animation-delay: 0.5s; animation-duration: 5s;"></div>
+            <div class="meteor" style="left: 30%; animation-delay: 4.5s; animation-duration: 3.8s; background: linear-gradient(to bottom, #fff, #ec4899, transparent);"></div>
+            <div class="meteor" style="left: 55%; animation-delay: 2.2s; animation-duration: 4.8s;"></div>
+        </div>
+    </div>
+
+    <header class="w-full fixed top-0 left-0 bg-[#02050c]/50 backdrop-blur-xl border-b border-gray-950/20 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center space-x-2 cursor-pointer" onclick="scrollToSection('home')">
+                <svg class="w-6 h-6 text-cyan-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+                </svg>
+                <span class="text-xl font-bold tracking-tight text-slate-100">Hyperdrome</span>
+            </div>
+
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-400">
+                <a href="#home" id="nav-home" onclick="scrollToSection('home')" class="text-white underline underline-offset-4 transition duration-200">Home</a>
+                <a href="#game" id="nav-game" onclick="scrollToSection('game')" class="hover:text-white transition duration-200">Game</a>
+                <a href="#meme" id="nav-meme" onclick="scrollToSection('meme')" class="hover:text-white transition duration-200">Meme</a>
+                <a href="#factory" id="nav-factory" onclick="scrollToSection('factory')" class="hover:text-white transition duration-200">Content Factory</a>
+                <a href="#community" id="nav-community" onclick="scrollToSection('community')" class="hover:text-white transition duration-200">Community</a>
+            </nav>
+
+            <div class="flex items-center space-x-4 relative">
+                <div class="relative">
+                    <button id="langBtn" onclick="toggleLangDropdown()" class="flex items-center space-x-2 border border-gray-900 bg-gray-950/50 px-3 py-1.5 rounded-lg text-xs font-medium text-gray-300 hover:border-gray-700 transition cursor-pointer">
+                        <span id="currentFlag">🇬🇧</span>
+                        <span id="currentLangLabel">English</span>
+                        <svg class="w-3 h-3 text-gray-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    
+                    <div id="langDropdown" class="hidden absolute right-0 mt-2 w-40 bg-gray-950 border border-gray-800 rounded-xl shadow-xl overflow-hidden z-50">
+                        <button onclick="changeLanguage('en')" class="w-full text-left px-4 py-2 text-xs text-gray-300 hover:bg-cyan-950/40 hover:text-cyan-400 transition flex items-center space-x-2"><span>🇬🇧</span> <span>English</span></button>
+                        <button onclick="changeLanguage('ja')" class="w-full text-left px-4 py-2 text-xs text-gray-300 hover:bg-cyan-950/40 hover:text-cyan-400 transition flex items-center space-x-2"><span>🇯🇵</span> <span>日本語</span></button>
+                        <button onclick="changeLanguage('zh')" class="w-full text-left px-4 py-2 text-xs text-gray-300 hover:bg-cyan-950/40 hover:text-cyan-400 transition flex items-center space-x-2"><span>🇨🇳</span> <span>中文</span></button>
+                        <button onclick="changeLanguage('ar')" class="w-full text-left px-4 py-2 text-xs text-gray-300 hover:bg-cyan-950/40 hover:text-cyan-400 transition flex items-center space-x-2"><span>🇸🇦</span> <span>العربية</span></button>
+                        <button onclick="changeLanguage('fr')" class="w-full text-left px-4 py-2 text-xs text-gray-300 hover:bg-cyan-950/40 hover:text-cyan-400 transition flex items-center space-x-2"><span>🇫🇷</span> <span>Français</span></button>
+                    </div>
+                </div>
+                
+                <a href="https://content.hyperdrome.finance/" target="_blank" id="btn-video-nav" class="bg-cyan-400 text-slate-950 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-cyan-300 transition duration-300 shadow-lg">Content Video</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="w-full flex-grow relative z-10">
+
+        <!-- 1. SECTION HOME -->
+        <section id="home" class="min-h-screen flex flex-col md:flex-row items-center justify-center max-w-6xl mx-auto px-6 gap-8 pt-24 overflow-hidden relative">
+            <div class="w-full md:w-1/2 flex items-center justify-center relative min-h-[480px]">
+                <img src="eth-removebg-preview.png" alt="Ethereum" class="absolute top-4 left-6 w-16 h-16 object-contain float-coin-1 z-20">
+                <img src="hyper.png" alt="Hyperliquid" class="absolute top-10 right-8 w-16 h-16 object-contain float-coin-2 z-20">
+                <img src="atro.png" alt="Astronaut" class="w-full max-w-[380px] h-auto object-contain float-astronaut relative z-10">
+                <img src="base1.png" alt="Base" class="absolute bottom-6 left-10 w-14 h-14 object-contain float-coin-3 z-20">
+                <img src="op.png" alt="Optimism" class="absolute bottom-12 right-12 w-14 h-14 object-contain float-coin-4 z-20">
+            </div>
+            <div class="w-full md:w-1/2 flex flex-col justify-center text-left h-40 px-4">
+                <h1 id="typewriterText" class="text-3xl sm:text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-cyan-300 leading-tight cursor-blink"></h1>
+            </div>
+            <div class="hidden"><span id="home-tag"></span><h1 id="home-title"></h1><p id="home-desc"></p><a href="#" id="home-b1"></a><a href="#" id="home-b2"></a></div>
+        </section>
+
+        <!-- 2. SECTION GAME -->
+        <section id="game" class="min-h-screen flex flex-col items-center justify-center max-w-6xl mx-auto px-6 py-24 gap-12 overflow-hidden">
+            <div class="text-center max-w-3xl">
+                <span id="game-tag" class="text-[10px] tracking-widest uppercase font-semibold text-cyan-400 border border-cyan-500/30 bg-cyan-950/30 px-3 py-1 rounded-full mb-4">Gaming Arena</span>
+                <h2 id="game-title" class="text-3xl sm:text-5xl font-medium tracking-tight text-slate-100 mb-2">Web3 Gaming Ecosystem|</h2>
+                <p id="game-desc" class="text-gray-400 text-sm sm:text-base font-light">Play the HTML Snake game below using your Keyboard Arrow Keys!</p>
+            </div>
+            
+            <div class="w-full flex flex-col md:flex-row items-center justify-center gap-12">
+                <div class="w-full md:w-1/2 flex flex-col items-center justify-center">
+                    <div class="relative p-4 bg-gray-950/40 border border-gray-900 rounded-2xl backdrop-blur-md shadow-2xl w-full max-w-[440px]">
+                        <div class="text-xs text-cyan-400 font-mono mb-2 flex justify-between px-2">
+                            <span>SCORE: <span id="gameScore">0</span></span>
+                            <span>CONTROL: ARROW KEYS</span>
+                        </div>
+                        <canvas id="snakeGame" width="400" height="400" class="w-full h-auto aspect-square rounded-xl"></canvas>
+                        <button onclick="resetGame()" id="game-b1" class="mt-4 w-full bg-cyan-500/20 hover:bg-cyan-500/40 text-cyan-300 border border-cyan-500/40 px-4 py-2 rounded-lg text-xs font-semibold font-mono tracking-wider transition cursor-pointer">RESET GAME</button>
+                        <div class="hidden"><a href="#" id="game-b2"></a></div>
+                    </div>
+                </div>
+
+                <div class="w-full md:w-1/2 flex items-center justify-center">
+                    <img src="astro2.png" alt="Gaming Astronaut" class="w-full max-w-[360px] sm:max-w-[400px] h-auto object-contain float-astronaut">
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. SECTION MEME -->
+        <section id="meme" class="min-h-screen flex flex-col items-center justify-center px-4 max-w-6xl mx-auto py-24">
+            <div class="text-center max-w-3xl mb-12">
+                <span id="meme-tag" class="text-[10px] tracking-widest uppercase font-semibold text-cyan-400 border border-cyan-500/30 bg-cyan-950/30 px-3 py-1 rounded-full mb-6">Meme Zone</span>
+                <h2 id="meme-title" class="text-4xl sm:text-5xl font-medium tracking-tight text-slate-100 mt-4 mb-4">The Capital of Laughs|</h2>
+                <p id="meme-desc" class="text-gray-400 text-base font-light">Track, trade, and explore the most viral tokens driving culture.</p>
+                <div class="hidden"><a href="#" id="meme-b1"></a><a href="#" id="meme-b2"></a></div>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 w-full">
+                <!-- Kotak 1 -->
+                <div class="group bg-gray-950/40 border border-gray-900 rounded-2xl overflow-hidden aspect-square flex flex-col justify-between p-4 backdrop-blur-sm hover:border-cyan-500/40 transition duration-300 shadow-2xl">
+                    <div class="w-full h-[75%] bg-gray-900/60 rounded-xl flex items-center justify-center overflow-hidden border border-gray-800/30 relative">
+                        <img src="meme1.jpg" alt="Meme 1" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-50 group-hover:opacity-100">
+                        <span class="absolute top-2 left-2 text-[9px] font-mono bg-black/60 px-1.5 py-0.5 rounded text-gray-400">#001</span>
+                    </div>
+                    <div class="flex items-center justify-between mt-2">
+                        <span class="text-xs font-semibold tracking-wide text-slate-300">Meme Asset #1</span>
+                        <svg class="w-4 h-4 text-gray-500 group-hover:text-cyan-400 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"/></svg>
+                    </div>
+                </div>
+                <!-- Kotak 2 -->
+                <div class="group bg-gray-950/40 border border-gray-900 rounded-2xl overflow-hidden aspect-square flex flex-col justify-between p-4 backdrop-blur-sm hover:border-cyan-500/40 transition duration-300 shadow-2xl">
+                    <div class="w-full h-[75%] bg-gray-900/60 rounded-xl flex items-center justify-center overflow-hidden border border-gray-800/30 relative">
+                        <img src="meme2.jpg" alt="Meme 2" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-50 group-hover:opacity-100">
+                        <span class="absolute top-2 left-2 text-[9px] font-mono bg-black/60 px-1.5 py-0.5 rounded text-gray-400">#002</span>
+                    </div>
+                    <div class="flex items-center justify-between mt-2">
+                        <span class="text-xs font-semibold tracking-wide text-slate-300">Meme Asset #2</span>
+                        <svg class="w-4 h-4 text-gray-500 group-hover:text-cyan-400 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"/></svg>
+                    </div>
+                </div>
+                <!-- Kotak 3 -->
+                <div class="group bg-gray-950/40 border border-gray-900 rounded-2xl overflow-hidden aspect-square flex flex-col justify-between p-4 backdrop-blur-sm hover:border-cyan-500/40 transition duration-300 shadow-2xl">
+                    <div class="w-full h-[75%] bg-gray-900/60 rounded-xl flex items-center justify-center overflow-hidden border border-gray-800/30 relative">
+                        <img src="meme3.jpg" alt="Meme 3" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-50 group-hover:opacity-100">
+                        <span class="absolute top-2 left-2 text-[9px] font-mono bg-black/60 px-1.5 py-0.5 rounded text-gray-400">#003</span>
+                    </div>
+                    <div class="flex items-center justify-between mt-2">
+                        <span class="text-xs font-semibold tracking-wide text-slate-300">Meme Asset #3</span>
+                        <svg class="w-4 h-4 text-gray-500 group-hover:text-cyan-400 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"/></svg>
+                    </div>
+                </div>
+                <!-- Kotak 4 -->
+                <div class="group bg-gray-950/40 border border-gray-900 rounded-2xl overflow-hidden aspect-square flex flex-col justify-between p-4 backdrop-blur-sm hover:border-cyan-500/40 transition duration-300 shadow-2xl">
+                    <div class="w-full h-[75%] bg-gray-900/60 rounded-xl flex items-center justify-center overflow-hidden border border-gray-800/30 relative">
+                        <img src="meme4.jpg" alt="Meme 4" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-50 group-hover:opacity-100">
+                        <span class="absolute top-2 left-2 text-[9px] font-mono bg-black/60 px-1.5 py-0.5 rounded text-gray-400">#004</span>
+                    </div>
+                    <div class="flex items-center justify-between mt-2">
+                        <span class="text-xs font-semibold tracking-wide text-slate-300">Meme Asset #4</span>
+                        <svg class="w-4 h-4 text-gray-500 group-hover:text-cyan-400 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"/></svg>
+                    </div>
+                </div>
+                <!-- Kotak 5 -->
+                <div class="group bg-gray-950/40 border border-gray-900 rounded-2xl overflow-hidden aspect-square flex flex-col justify-between p-4 backdrop-blur-sm hover:border-cyan-500/40 transition duration-300 shadow-2xl">
+                    <div class="w-full h-[75%] bg-gray-900/60 rounded-xl flex items-center justify-center overflow-hidden border border-gray-800/30 relative">
+                        <img src="meme5.jpg" alt="Meme 5" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-50 group-hover:opacity-100">
+                        <span class="absolute top-2 left-2 text-[9px] font-mono bg-black/60 px-1.5 py-0.5 rounded text-gray-400">#005</span>
+                    </div>
+                    <div class="flex items-center justify-between mt-2">
+                        <span class="text-xs font-semibold tracking-wide text-slate-300">Meme Asset #5</span>
+                        <svg class="w-4 h-4 text-gray-500 group-hover:text-cyan-400 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"/></svg>
+                    </div>
+                </div>
+                <!-- Kotak 6 -->
+                <div class="group bg-gray-950/40 border border-gray-900 rounded-2xl overflow-hidden aspect-square flex flex-col justify-between p-4 backdrop-blur-sm hover:border-cyan-500/40 transition duration-300 shadow-2xl">
+                    <div class="w-full h-[75%] bg-gray-900/60 rounded-xl flex items-center justify-center overflow-hidden border border-gray-800/30 relative">
+                        <img src="meme6.jpg" alt="Meme 6" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-50 group-hover:opacity-100">
+                        <span class="absolute top-2 left-2 text-[9px] font-mono bg-black/60 px-1.5 py-0.5 rounded text-gray-400">#006</span>
+                    </div>
+                    <div class="flex items-center justify-between mt-2">
+                        <span class="text-xs font-semibold tracking-wide text-slate-300">Meme Asset #6</span>
+                        <svg class="w-4 h-4 text-gray-500 group-hover:text-cyan-400 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"/></svg>
+                    </div>
+                </div>
+                <!-- Kotak 7 -->
+                <div class="group bg-gray-950/40 border border-gray-900 rounded-2xl overflow-hidden aspect-square flex flex-col justify-between p-4 backdrop-blur-sm hover:border-cyan-500/40 transition duration-300 shadow-2xl">
+                    <div class="w-full h-[75%] bg-gray-900/60 rounded-xl flex items-center justify-center overflow-hidden border border-gray-800/30 relative">
+                        <img src="meme7.jpg" alt="Meme 7" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-50 group-hover:opacity-100">
+                        <span class="absolute top-2 left-2 text-[9px] font-mono bg-black/60 px-1.5 py-0.5 rounded text-gray-400">#007</span>
+                    </div>
+                    <div class="flex items-center justify-between mt-2">
+                        <span class="text-xs font-semibold tracking-wide text-slate-300">Meme Asset #7</span>
+                        <svg class="w-4 h-4 text-gray-500 group-hover:text-cyan-400 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"/></svg>
+                    </div>
+                </div>
+                <!-- Kotak 8 -->
+                <div class="group bg-gray-950/40 border border-gray-900 rounded-2xl overflow-hidden aspect-square flex flex-col justify-between p-4 backdrop-blur-sm hover:border-cyan-500/40 transition duration-300 shadow-2xl">
+                    <div class="w-full h-[75%] bg-gray-900/60 rounded-xl flex items-center justify-center overflow-hidden border border-gray-800/30 relative">
+                        <img src="meme8.jpg" alt="Meme 8" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-50 group-hover:opacity-100">
+                        <span class="absolute top-2 left-2 text-[9px] font-mono bg-black/60 px-1.5 py-0.5 rounded text-gray-400">#008</span>
+                    </div>
+                    <div class="flex items-center justify-between mt-2">
+                        <span class="text-xs font-semibold tracking-wide text-slate-300">Meme Asset #8</span>
+                        <svg class="w-4 h-4 text-gray-500 group-hover:text-cyan-400 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"/></svg>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. SECTION CONTENT FACTORY -->
+        <section id="factory" class="min-h-screen flex flex-col md:flex-row items-center justify-between max-w-5xl mx-auto px-6 py-24 gap-12">
+            <div class="w-full md:w-1/2 flex flex-col justify-center text-left">
+                <span id="factory-tag" class="w-max text-[10px] tracking-widest uppercase font-bold text-emerald-400 border border-emerald-500/30 bg-emerald-950/30 px-3 py-1 rounded-full mb-4">Hyperdrome Platform</span>
+                <h2 id="factory-title" class="text-4xl sm:text-6xl font-bold tracking-tight text-white mb-6">Content<br><span class="text-emerald-400">Factory</span></h2>
+                
+                <div id="factory-desc" class="space-y-3 font-mono text-sm sm:text-base tracking-wide text-gray-300 border-l-2 border-emerald-500/30 pl-4 mb-8">
+                    <p class="hover:text-white transition">MAKE MEMES.</p>
+                    <p class="hover:text-white transition">CREATE THREADS.</p>
+                    <p class="text-emerald-400 font-bold">BE REWARDED.</p>
+                </div>
+
+                <div class="grid grid-cols-3 gap-4 text-center border-t border-gray-900 pt-6">
+                    <div class="flex flex-col items-center group cursor-pointer">
+                        <div class="p-3 bg-gray-950/60 border border-gray-800 group-hover:border-emerald-500/50 rounded-xl transition duration-300 text-emerald-400">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 01-6.364 0M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z"/></svg>
+                        </div>
+                        <span id="factory-b1" class="text-[10px] font-bold tracking-widest uppercase font-mono mt-2 text-gray-400 group-hover:text-white transition">MEME</span>
+                    </div>
+                    <div class="flex flex-col items-center group cursor-pointer">
+                        <div class="p-3 bg-gray-950/60 border border-gray-800 group-hover:border-emerald-500/50 rounded-xl transition duration-300 text-emerald-400">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12"/></svg>
+                        </div>
+                        <span id="factory-b2" class="text-[10px] font-bold tracking-widest uppercase font-mono mt-2 text-gray-400 group-hover:text-white transition">THREAD</span>
+                    </div>
+                    <div class="flex flex-col items-center group cursor-pointer">
+                        <div class="p-3 bg-gray-950/60 border border-gray-800 group-hover:border-emerald-500/50 rounded-xl transition duration-300 text-emerald-400">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.214.016c1.572.114 3.235.114 4.807 0a16.936 16.936 0 00-1.077-3.424M12 12h.008v.008H12V12zm0-6h.008v.008H12V6z"/></svg>
+                        </div>
+                        <span class="text-[10px] font-bold tracking-widest uppercase font-mono mt-2 text-gray-400 group-hover:text-white transition">EARN</span>
+                    </div>
+                </div>
+
+                <a href="https://content.hyperdrome.finance" target="_blank" class="mt-8 text-xs font-mono text-emerald-400/80 hover:text-emerald-300 flex items-center gap-2 bg-emerald-950/20 w-max px-4 py-2 border border-emerald-900/40 rounded-xl transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-.778.099-1.533.284-2.253"/></svg>
+                    content.hyperdrome.finance
+                </a>
+            </div>
+
+            <div class="w-full md:w-1/2 flex items-center justify-center relative">
+                <div class="w-full max-w-[440px] aspect-square rounded-3xl border border-gray-900 bg-gradient-to-br from-gray-950/80 via-gray-950/30 to-transparent p-8 shadow-2xl backdrop-blur-md flex flex-col items-center justify-center gap-6 overflow-hidden group hover:border-emerald-500/20 transition duration-500">
+                    <div class="absolute -top-10 -right-10 w-40 h-40 bg-emerald-500/10 rounded-full filter blur-3xl group-hover:bg-emerald-500/20 transition duration-500"></div>
+                    
+                    <div class="flex gap-4 w-full justify-center">
+                        <div class="w-24 h-24 bg-gray-900/90 border border-gray-800 rounded-2xl flex flex-col items-center justify-center shadow-xl group-hover:translate-y-[-5px] transition duration-300 text-emerald-400">
+                            <span class="text-3xl">🐸</span>
+                            <span class="text-[9px] font-mono mt-2 text-gray-500">MEME</span>
+                        </div>
+                        <div class="w-24 h-24 bg-gray-900/90 border border-emerald-500/30 rounded-2xl flex flex-col items-center justify-center shadow-emerald-950/20 shadow-xl group-hover:translate-y-[-10px] transition duration-300 text-emerald-400">
+                            <span class="text-3xl">📄</span>
+                            <span class="text-[9px] font-mono mt-2 text-emerald-400">THREAD</span>
+                        </div>
+                        <div class="w-24 h-24 bg-gray-900/90 border border-gray-800 rounded-2xl flex flex-col items-center justify-center shadow-xl group-hover:translate-y-[-5px] transition duration-300 text-emerald-400">
+                            <span class="text-3xl">⬡</span>
+                            <span class="text-[9px] font-mono mt-2 text-gray-500">HYPE</span>
+                        </div>
+                    </div>
+                    <div class="h-[2px] w-4/5 bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
+                    <p class="text-center text-xs font-mono text-gray-500 px-6">Hyperdrome Content Factory Automated Pipeline Layer.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. SECTION COMMUNITY -->
+        <section id="community" class="min-h-screen flex flex-col md:flex-row items-center justify-between max-w-5xl mx-auto px-6 py-24 gap-12 overflow-hidden">
+            <div class="w-full md:w-1/2 flex flex-col justify-center text-left">
+                <span id="community-tag" class="w-max text-[10px] tracking-widest uppercase font-semibold text-cyan-400 border border-cyan-500/30 bg-cyan-950/30 px-3 py-1 rounded-full mb-6">Hyper-Hub</span>
+                <h2 id="community-title" class="text-4xl sm:text-6xl font-medium tracking-tight text-slate-100 mb-6 leading-tight">Join the Global Guild|</h2>
+                <p id="community-desc" class="text-gray-400 text-base sm:text-lg mb-8 font-light">Connect with thousands of builders, traders, and gamers globally.</p>
+                <div class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+                    <a href="https://discord.com/invite/95tJ7VBZkp" target="_blank" id="community-b1" class="w-full sm:w-auto bg-cyan-400 text-slate-950 px-6 py-3 rounded-lg text-sm font-semibold hover:bg-cyan-300 transition duration-300 text-center">Join Discord</a>
+                    <a href="https://x.com/hyperdromeX" target="_blank" id="community-b2" class="w-full sm:w-auto border border-gray-800 bg-gray-950/20 hover:bg-gray-900/40 text-gray-300 px-6 py-3 rounded-lg text-sm font-medium transition duration-200 text-center">Twitter / X</a>
+                </div>
+            </div>
+
+            <div class="w-full md:w-1/2 flex items-center justify-center">
+                <img src="astro3.png" alt="Community Balloon Astronaut" class="w-full max-w-[360px] sm:max-w-[420px] h-auto object-contain float-astronaut">
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="w-full max-w-7xl mx-auto px-6 py-8 border-t border-gray-900/40 flex flex-col items-center space-y-5 relative z-10">
+        <div class="flex items-center space-x-2 text-gray-400 opacity-80 cursor-pointer" onclick="scrollToSection('home')">
+            <svg class="w-5 h-5 text-cyan-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+            </svg>
+            <span class="text-base font-semibold tracking-tight">Hyperdrome</span>
+        </div>
+        <div class="flex items-center space-x-6 text-gray-500">
+            <a href="https://x.com/hyperdromeX" target="_blank" class="hover:text-gray-300 transition"><svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+            <a href="https://discord.com/invite/95tJ7VBZkp" target="_blank" class="hover:text-gray-300 transition"><svg class="w-5 h-5 fill-current" viewBox="0 0 127.14 96.36"><path d="M107.7,8.07A105.15,105.15,0,0,0,77.26,0a77.19,77.19,0,0,0-3.3,6.83A96.67,96.67,0,0,0,53.22,6.83,77.19,77.19,0,0,0,49.88,0,105.15,105.15,0,0,0,19.44,8.07C3.66,31.58-1.86,54.65,1,77.53A105.73,105.73,0,0,0,32,96.36a74.37,74.37,0,0,0,6.7-10.93,68.6,68.6,0,0,1-10.64-5.12c.91-.67,1.81-1.37,2.65-2.1a75.22,75.22,0,0,0,72.76,0c.84.73,1.74,1.43,2.65,2.1a68.86,68.86,0,0,1-10.64,5.12,74.74,74.74,0,0,0,6.7,10.93,105.54,105.54,0,0,0,31.11-18.83C129.07,48.49,122.9,25.57,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53S36.18,40.36,42.45,40.36,53.83,46,53.83,53,48.72,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.24,60,73.24,53S78.41,40.36,84.69,40.36,96.07,46,96.07,53,91,65.69,84.69,65.69Z"/></svg></a>
+            <a href="#" class="hover:text-gray-300 transition"><svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg></a>
+            <a href="https://github.com/Hyperdrome-finance" target="_blank" class="hover:text-gray-300 transition"><svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+        </div>
+        <div class="flex space-x-6 text-xs text-gray-500">
+            <a href="#" class="hover:text-gray-400 transition">Docs</a>
+            <a href="#" class="hover:text-gray-400 transition">Disclaimer</a>
+        </div>
+    </footer>
+
+    <!-- INTERAKSI JAVASCRIPT -->
+    <script>
+        // PRE-LOAD IMAGE OBJECTS UNTUK GAME CANVAS
+        const snakeHeadImg = new Image();
+        snakeHeadImg.src = '6baTg-xP_400x400 (1).jpg'; // Logo Pertama untuk Ular
+
+        const snakeAppleImg = new Image();
+        snakeAppleImg.src = 'f5cl2Syx_400x400 (1).jpg'; // Logo Kedua untuk Apple Makanan
+
+        const translations = {
+            en: {
+                flag: "🇬🇧", label: "English", direction: "ltr",
+                nav: { home: "Home", game: "Game", meme: "Meme", factory: "Content Factory", community: "Community", video: "Content Video" },
+                game: { tag: "Gaming Arena", title: "Web3 Gaming Ecosystem|", desc: "Play the HTML Snake game below using your Keyboard Arrow Keys!", b1: "RESET GAME", b2: "" },
+                meme: { tag: "Meme Zone", title: "The Capital of Laughs|", desc: "Track, trade, and explore the most viral tokens driving culture.", b1: "", b2: "" },
+                factory: { tag: "Hyperdrome Platform", title: "Content Factory|", desc: "MAKE MEMES. \\n CREATE THREADS. \\n BE REWARDED.", b1: "MEME", b2: "THREAD" },
+                community: { tag: "Hyper-Hub", title: "Join the Global Guild|", desc: "Connect with thousands of builders, traders, and gamers globally.", b1: "Join Discord", b2: "Twitter / X" }
+            },
+            ja: {
+                flag: "🇯🇵", label: "日本語", direction: "ltr",
+                nav: { home: "ホーム", game: "ゲーム", meme: "ミーム", factory: "コンテンツ工場", community: "コミュニティ", video: "動画コンテンツ" },
+                game: { tag: "ゲームアリーナ", title: "Web3 ゲーム環境|", desc: "矢印キーを使って下のスネークゲームをプレイしてください！", b1: "ゲームリセット", b2: "" },
+                meme: { tag: "ミームゾーン", title: "笑いの中心地へようこそ|", desc: "文化を動かす最もバイラルなトークンを追跡、取引、探索。", b1: "", b2: "" },
+                factory: { tag: "Hyperdrome プラットフォーム", title: "コンテンツファクトリー|", desc: "ミームを作る。 \\n スレッドを立てる。 \\n 報酬を得る。", b1: "ミーム", b2: "スレッド" },
+                community: { tag: "ハイパーハブ", title: "グローバルギルドに参加|", desc: "世界中の何千もの開発者やゲーマーとつながろう。", b1: "Discordに参加", b2: "Twitter / X" }
+            },
+            zh: {
+                flag: "🇨🇳", label: "中文", direction: "ltr",
+                nav: { home: "首页", game: "游戏", meme: "模因", factory: "内容工厂", community: "社区", video: "视频内容" },
+                game: { tag: "游戏竞技场", title: "Web3 游戏生态|", desc: "使用键盘方向键操控，马上体验经典的贪吃蛇 HTML 游戏！", b1: "重置游戏", b2: "" },
+                meme: { tag: "模因专区", title: "幽默与财富的聚集地|", desc: "追踪、交易并探索引领文化潮流的最具病毒性代币。", b1: "", b2: "" },
+                factory: { tag: "Hyperdrome 平台", title: "内容工厂|", desc: "制作模因。 \\n 创建推特长文。 \\n 获得奖励。", b1: "模因", b2: "长文" },
+                community: { tag: "超级中心", title: "加入全球公会网络|", desc: "与全球数千名开发者、交易员 and 游戏玩家建立联系。", b1: "加入 Discord", b2: "Twitter / X" }
+            },
+            ar: {
+                flag: "🇸🇦", label: "العربية", direction: "rtl",
+                nav: { home: "الرئيسية", game: "الألعاب", meme: "ميمي", factory: "مصنع المحتوى", community: "المجتمع", video: "محتوى الفيديو" },
+                game: { tag: "ساحة الألعاب", title: "نظام ألعاب Web3|", desc: "العب لعبة الثعبان أدناه باستخدام أسهم لوحة المفاتيح الشخصية!", b1: "إعادة ضبط اللعبة", b2: "" },
+                meme: { tag: "منطقة Mمe", title: "عاصمة الضحك والعملات|", desc: "تتبع، تداول، واستكشف أكثر الرموز انتشاراً.", b1: "", b2: "" },
+                factory: { tag: "منصة Hyperdrome", title: "مصنع المحتوى|", desc: "اصنع الميمز. \\n أنشئ الثريدz. \\n احصل على المكافآت.", b1: "ميم", b2: "ثريد" },
+                community: { tag: "المركز الفائق", title: "انضم إلى التحالف العالمي|", desc: "تواصل مع الآلاف من المطورين، المتداولين، واللاعبين.", b1: "انضم إلى ديسكورد", b2: "تويتر / X" }
+            },
+            fr: {
+                flag: "🇫🇷", label: "Français", direction: "ltr",
+                nav: { home: "Accueil", game: "Jeux", meme: "Meme", factory: "Usine à Contenu", community: "Communauté", video: "Contenu Vidéo" },
+                game: { tag: "Arène de Jeu", title: "Écosystème de Jeu Web3|", desc: "Jouez au jeu de serpent HTML ci-dessous avec vos touches directionnelles !", b1: "RESET GAME", b2: "" },
+                meme: { tag: "Zone Meme", title: "La Capitale de l'Humour|", desc: "Suivez, échangez et explorez les jetons les plus viraux de la culture.", b1: "", b2: "" },
+                factory: { tag: "Plateforme Hyperdrome", title: "Usine à Contenu|", desc: "CRÉEZ DES MEMES. \\n FAITES DES THREADS. \\n GAGNEZ DES RÉCOMPENSES.", b1: "MEME", b2: "THREAD" },
+                community: { tag: "Hyper-Hub", title: "Rejoignez la Guilde Globale|", desc: "Connectez-vous avec des milliers de bâtisseurs, traders et gamers.", b1: "Rejoindre Discord", b2: "Twitter / X" }
+            }
+        };
+
+        let currentLang = 'en';
+
+        // --- ENGINE KONTROL AUDIO ---
+        function toggleMusic() {
+            const music = document.getElementById("bgMusic");
+            const iconMute = document.getElementById("iconMute");
+            const iconPlaying = document.getElementById("iconPlaying");
+            const ping = document.getElementById("musicPing");
+            const btn = document.getElementById("musicBtn");
+
+            if (music.paused) {
+                music.play().then(() => {
+                    iconMute.classList.add("hidden"); iconPlaying.classList.remove("hidden");
+                    ping.classList.add("animate-ping", "opacity-100"); btn.classList.add("text-cyan-400", "border-cyan-500/50");
+                }).catch(err => { console.log("Interaksi diperlukan browser."); });
+            } else {
+                music.pause(); iconMute.classList.remove("hidden"); iconPlaying.classList.add("hidden");
+                ping.classList.remove("animate-ping", "opacity-100"); btn.classList.remove("text-cyan-400", "border-cyan-500/50");
+            }
+        }
+
+        // --- ENGINE TYPEWRITER ---
+        const typewriterWords = [
+            "Defi that thinks for you",
+            "Trade with words, not clicks",
+            "The dex that understands you",
+            "Ask, Trade, EARN",
+            "Your dex has a brain now"
+        ];
+        let wordIndex = 0; let charIndex = 0; let isDeleting = false;
+        const speedTyping = 100; const speedDeleting = 50; const delayBetweenWords = 2000;
+
+        function playTypewriter() {
+            const currentSentence = typewriterWords[wordIndex];
+            const textElement = document.getElementById("typewriterText");
+            if (isDeleting) {
+                textElement.innerText = currentSentence.substring(0, charIndex - 1); charIndex--;
+            } else {
+                textElement.innerText = currentSentence.substring(0, charIndex + 1); charIndex++;
+            }
+            if (!isDeleting && charIndex === currentSentence.length) {
+                setTimeout(() => isDeleting = true, delayBetweenWords);
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false; wordIndex = (wordIndex + 1) % typewriterWords.length;
+            }
+            setTimeout(playTypewriter, isDeleting ? speedDeleting : speedTyping);
+        }
+
+        function toggleLangDropdown() { document.getElementById('langDropdown').classList.toggle('hidden'); }
+        window.addEventListener('click', function(e) {
+            const btn = document.getElementById('langBtn'); const dropdown = document.getElementById('langDropdown');
+            if (btn && !btn.contains(e.target) && !dropdown.contains(e.target)) { dropdown.classList.add('hidden'); }
+        });
+
+        function changeLanguage(lang) {
+            currentLang = lang; const data = translations[lang];
+            document.getElementById('currentFlag').innerText = data.flag;
+            document.getElementById('currentLangLabel').innerText = data.label;
+            if (data.direction === 'rtl') { document.body.classList.add('rtl'); } else { document.body.classList.remove('rtl'); }
+            
+            const menuKeys = ['home', 'game', 'meme', 'factory', 'community'];
+            menuKeys.forEach(k => document.getElementById(`nav-${k}`).innerText = data.nav[k]);
+            document.getElementById('btn-video-nav').innerText = data.nav.video;
+            
+            const dynamicSections = ['game', 'meme', 'community'];
+            dynamicSections.forEach(section => {
+                document.getElementById(`${section}-tag`).innerText = data[section].tag;
+                document.getElementById(`${section}-title`).innerText = data[section].title;
+                document.getElementById(`${section}-desc`).innerText = data[section].desc;
+                if(data[section].b1) document.getElementById(`${section}-b1`).innerText = data[section].b1;
+                if(data[section].b2) document.getElementById(`${section}-b2`).innerText = data[section].b2;
+            });
+
+            document.getElementById('factory-tag').innerText = data.factory.tag;
+            document.getElementById('factory-b1').innerText = data.factory.b1;
+            document.getElementById('factory-b2').innerText = data.factory.b2;
+
+            document.getElementById('langDropdown').classList.add('hidden');
+        }
+
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) { element.scrollIntoView({ behavior: 'smooth' }); setActiveNav(id); }
+        }
+
+        function setActiveNav(activeId) {
+            const menus = ['home', 'game', 'meme', 'factory', 'community'];
+            menus.forEach(m => {
+                const element = document.getElementById(`nav-${m}`);
+                if (m === activeId) { element.classList.add('text-white', 'underline', 'underline-offset-4'); element.classList.remove('text-gray-400'); } 
+                else { element.classList.remove('text-white', 'underline', 'underline-offset-4'); element.classList.add('text-gray-400'); }
+            });
+        }
+
+        window.addEventListener('scroll', () => {
+            const sections = ['home', 'game', 'meme', 'factory', 'community']; let currentActive = 'home';
+            sections.forEach(id => {
+                const section = document.getElementById(id); const rect = section.getBoundingClientRect();
+                if (rect.top <= 160) { currentActive = id; }
+            });
+            setActiveNav(currentActive);
+        });
+
+        // ==========================================
+        // ENGINE BACKGROUND BLOCKCHAIN & COINS
+        // ==========================================
+        const bcCanvas = document.getElementById("blockchainCanvas"); const bcCtx = bcCanvas.getContext("2d");
+        let nodes = []; const cryptoLogos = ["BTC", "ETH", "BNB", "SOL", "HYPE"];
+        function resizeBlockchainCanvas() { bcCanvas.width = window.innerWidth; bcCanvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeBlockchainCanvas); resizeBlockchainCanvas();
+
+        for (let i = 0; i < 40; i++) {
+            nodes.push({
+                x: Math.random() * bcCanvas.width, y: Math.random() * bcCanvas.height,
+                vx: (Math.random() - 0.5) * 0.35, vy: (Math.random() - 0.5) * 0.35, radius: Math.random() * 2 + 1,
+                coinType: Math.random() > 0.65 ? cryptoLogos[Math.floor(Math.random() * cryptoLogos.length)] : null, pulse: Math.random() * Math.PI
+            });
+        }
+
+        function drawBlockchainNetwork() {
+            bcCtx.clearRect(0, 0, bcCanvas.width, bcCanvas.height);
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    let dx = nodes[i].x - nodes[j].x; let dy = nodes[i].y - nodes[j].y; let dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 140) {
+                        bcCtx.beginPath(); bcCtx.moveTo(nodes[i].x, nodes[i].y); bcCtx.lineTo(nodes[j].x, nodes[j].y);
+                        bcCtx.strokeStyle = `rgba(6, 182, 212, ${0.15 * (1 - dist / 140)})`; bcCtx.lineWidth = 0.8; bcCtx.stroke();
+                    }
+                }
+            }
+            nodes.forEach(node => {
+                node.x += node.vx; node.y += node.vy; node.pulse += 0.02;
+                if (node.x < 0 || node.x > bcCanvas.width) node.vx *= -1; if (node.y < 0 || node.y > bcCanvas.height) node.vy *= -1;
+                bcCtx.beginPath(); bcCtx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+                bcCtx.fillStyle = node.coinType ? "rgba(255, 255, 255, 0.9)" : "rgba(34, 211, 238, 0.5)"; bcCtx.fill();
+                if (node.coinType) {
+                    bcCtx.save(); bcCtx.shadowBlur = 8; bcCtx.shadowColor = node.coinType === 'BTC' ? '#f59e0b' : '#22d3ee';
+                    bcCtx.font = "bold 10px monospace";
+                    bcCtx.fillStyle = node.coinType === 'BTC' ? '#fbbf24' : node.coinType === 'ETH' ? '#a78bfa' : node.coinType === 'BNB' ? '#fbbf24' : node.coinType === 'SOL' ? '#34d399' : '#22d3ee';
+                    let offset = Math.sin(node.pulse) * 4; bcCtx.fillText(`⬡ ${node.coinType}`, node.x + 6, node.y + 3 + offset); bcCtx.restore();
+                }
+            });
+            requestAnimationFrame(drawBlockchainNetwork);
+        }
+        requestAnimationFrame(drawBlockchainNetwork);
+
+        // ==========================================================
+        // ENGINE GAME SNAKE (LOGO RENDERING DYNAMIC UPDATE)
+        // ==========================================================
+        const canvas = document.getElementById("snakeGame"); const ctx = canvas.getContext("2d");
+        const scoreEl = document.getElementById("gameScore"); const grid = 20;
+        let count = 0; let score = 0;
+        let snake = { x: 160, y: 160, dx: grid, dy: 0, cells: [], maxCells: 4 }; let apple = { x: 320, y: 320 };
+        function getRandomInt(min, max) { return Math.floor(Math.random() * (max - min)) + min; }
+
+        function gameLoop() {
+            requestAnimationFrame(gameLoop); if (++count < 6) { return; } count = 0; ctx.clearRect(0,0,canvas.width,canvas.height);
+            snake.x += snake.dx; snake.y += snake.dy;
+            if (snake.x < 0) { snake.x = canvas.width - grid; } else if (snake.x >= canvas.width) { snake.x = 0; }
+            if (snake.y < 0) { snake.y = canvas.height - grid; } else if (snake.y >= canvas.height) { snake.y = 0; }
+            snake.cells.unshift({x: snake.x, y: snake.y}); if (snake.cells.length > snake.maxCells) { snake.cells.pop(); }
+
+            // Menggambar Gambar Target yang Dilahap (Menggunakan Gambar f5cl2Syx_400x400 (1).jpg)
+            if (snakeAppleImg.complete) {
+                ctx.drawImage(snakeAppleImg, apple.x, apple.y, grid, grid);
+            } else {
+                ctx.fillStyle = '#f43f5e'; ctx.fillRect(apple.x, apple.y, grid-1, grid-1);
+            }
+
+            // Menggambar Seluruh Tubuh Ular Berupa Gambar Logo (Menggunakan Gambar 6baTg-xP_400x400 (1).jpg)
+            snake.cells.forEach(function(cell, index) {
+                if (snakeHeadImg.complete) {
+                    ctx.drawImage(snakeHeadImg, cell.x, cell.y, grid, grid);
+                } else {
+                    ctx.fillStyle = '#22d3ee'; ctx.fillRect(cell.x, cell.y, grid-1, grid-1);
+                }
+                
+                if (cell.x === apple.x && cell.y === apple.y) {
+                    snake.maxCells++; score += 10; scoreEl.innerText = score;
+                    apple.x = getRandomInt(0, 20) * grid; apple.y = getRandomInt(0, 20) * grid;
+                }
+                for (let i = index + 1; i < snake.cells.length; i++) { if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) { resetGame(); } }
+            });
+        }
+        function resetGame() {
+            score = 0; scoreEl.innerText = score; snake.x = 160; snake.y = 160; snake.cells = []; snake.maxCells = 4; snake.dx = grid; snake.dy = 0;
+            apple.x = getRandomInt(0, 20) * grid; apple.y = getRandomInt(0, 20) * grid;
+        }
+        window.addEventListener('keydown', function(e) { if([37, 38, 39, 40].indexOf(e.keyCode) > -1) { e.preventDefault(); } }, false);
+        document.addEventListener('keydown', function(e) {
+            if (e.which === 37 && snake.dx === 0) { snake.dx = -grid; snake.dy = 0; }
+            else if (e.which === 38 && snake.dy === 0) { snake.dy = -grid; snake.dx = 0; } 
+            else if (e.which === 39 && snake.dx === 0) { snake.dx = grid; snake.dy = 0; }
+            else if (e.which === 40 && snake.dy === 0) { snake.dy = grid; snake.dx = 0; }
+        });
+
+        window.onload = function() {
+            changeLanguage('en'); playTypewriter(); requestAnimationFrame(gameLoop);
+        };
+    </script>
+</body>
+</html>
