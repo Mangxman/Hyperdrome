@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hyperdrome - Complete Cosmic Website</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- Font Google (Inter) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -17,7 +15,7 @@
             overflow-x: hidden;
         }
 
-        /* Pembungkus Latar Belakang */
+        /* Cosmic Background Wrapper */
         .cosmic-container {
             position: fixed;
             top: 0;
@@ -29,7 +27,7 @@
             background: #02050c;
         }
 
-        /* Layer Aurora */
+        /* Aurora Layer Effect */
         .aurora-layer {
             position: absolute;
             width: 200%;
@@ -51,7 +49,7 @@
             100% { transform: rotate(360deg) scale(1); }
         }
 
-        /* --- ANIMASI HUJAN METEOR TEBAL --- */
+        /* --- METEOR SHOWER ANIMATION --- */
         .meteor-shower {
             position: absolute;
             width: 100%;
@@ -76,7 +74,7 @@
             100% { top: 120%; transform: translateX(-800px); opacity: 0; }
         }
 
-        /* --- ANIMASI ASTRONOT MELAYANG --- */
+        /* --- FLOATING ASTRONAUT ANIMATION --- */
         .float-astronaut {
             animation: floatAnim 6s infinite ease-in-out;
             filter: drop-shadow(0 15px 50px rgba(6, 182, 212, 0.25));
@@ -87,7 +85,7 @@
             100% { transform: translateY(0px) rotate(0deg); }
         }
 
-        /* Variasi animasi melayang koin crypto di halaman utama */
+        /* Floating Crypto Coins Animation Variations */
         .float-coin-1 { animation: floatCoinKey1 5s infinite ease-in-out; filter: drop-shadow(0 10px 25px rgba(167, 139, 250, 0.25)); }
         .float-coin-2 { animation: floatCoinKey2 6s infinite ease-in-out; filter: drop-shadow(0 10px 25px rgba(52, 211, 153, 0.25)); }
         .float-coin-3 { animation: floatCoinKey3 5.5s infinite ease-in-out; filter: drop-shadow(0 10px 25px rgba(96, 165, 250, 0.25)); }
@@ -110,7 +108,7 @@
             50% { transform: translateY(-18px) rotate(-4deg); }
         }
 
-        /* Efek Kursor Mengetik Berkedip */
+        /* Blinking Typewriter Cursor Effect */
         .cursor-blink::after {
             content: '|';
             animation: blink 0.7s infinite;
@@ -122,7 +120,7 @@
             50% { opacity: 0; }
         }
 
-        /* Canvas Blockchain */
+        /* Blockchain Canvas Overlay */
         #blockchainCanvas {
             position: absolute;
             top: 0;
@@ -136,8 +134,8 @@
         .rtl { direction: rtl; }
         html { scroll-behavior: smooth; }
         
-        /* Canvas Game Ular */
-        #snakeGame {
+        /* Game Canvas Borders and Neon Shadowing */
+        .game-canvas-style {
             border: 2px solid #06b6d4;
             background-color: rgba(5, 15, 25, 0.9);
             box-shadow: 0 0 30px rgba(6, 182, 212, 0.3);
@@ -214,7 +212,6 @@
 
     <main class="w-full flex-grow relative z-10">
 
-        <!-- 1. SECTION HOME -->
         <section id="home" class="min-h-screen flex flex-col md:flex-row items-center justify-center max-w-6xl mx-auto px-6 gap-8 pt-24 overflow-hidden relative">
             <div class="w-full md:w-1/2 flex items-center justify-center relative min-h-[480px]">
                 <img src="eth-removebg-preview.png" alt="Ethereum" class="absolute top-4 left-6 w-16 h-16 object-contain float-coin-1 z-20">
@@ -229,34 +226,40 @@
             <div class="hidden"><span id="home-tag"></span><h1 id="home-title"></h1><p id="home-desc"></p><a href="#" id="home-b1"></a><a href="#" id="home-b2"></a></div>
         </section>
 
-        <!-- 2. SECTION GAME -->
         <section id="game" class="min-h-screen flex flex-col items-center justify-center max-w-6xl mx-auto px-6 py-24 gap-12 overflow-hidden">
             <div class="text-center max-w-3xl">
                 <span id="game-tag" class="text-[10px] tracking-widest uppercase font-semibold text-cyan-400 border border-cyan-500/30 bg-cyan-950/30 px-3 py-1 rounded-full mb-4">Gaming Arena</span>
                 <h2 id="game-title" class="text-3xl sm:text-5xl font-medium tracking-tight text-slate-100 mb-2">Web3 Gaming Ecosystem|</h2>
-                <p id="game-desc" class="text-gray-400 text-sm sm:text-base font-light">Play the HTML Snake game below using your Keyboard Arrow Keys!</p>
+                <p id="game-desc" class="text-gray-400 text-sm sm:text-base font-light">Choose your game mode and dominate the cyber leaderboard!</p>
             </div>
             
+            <div class="flex space-x-4 mb-2">
+                <button onclick="switchGameMode('snake')" id="tabSnake" class="px-5 py-2 text-xs font-bold font-mono tracking-wider rounded-lg border border-cyan-400 bg-cyan-500/20 text-cyan-300 cursor-pointer transition">SNAKE GAME</button>
+                <button onclick="switchGameMode('catch')" id="tabCatch" class="px-5 py-2 text-xs font-bold font-mono tracking-wider rounded-lg border border-gray-800 bg-gray-950/40 text-gray-400 hover:text-white cursor-pointer transition">CATCH HYPE COIN</button>
+            </div>
+
             <div class="w-full flex flex-col md:flex-row items-center justify-center gap-12">
                 <div class="w-full md:w-1/2 flex flex-col items-center justify-center">
                     <div class="relative p-4 bg-gray-950/40 border border-gray-900 rounded-2xl backdrop-blur-md shadow-2xl w-full max-w-[440px]">
                         <div class="text-xs text-cyan-400 font-mono mb-2 flex justify-between px-2">
                             <span>SCORE: <span id="gameScore">0</span></span>
-                            <span>CONTROL: ARROW KEYS</span>
+                            <span id="gameControls">CONTROL: ARROW KEYS</span>
                         </div>
-                        <canvas id="snakeGame" width="400" height="400" class="w-full h-auto aspect-square rounded-xl"></canvas>
-                        <button onclick="resetGame()" id="game-b1" class="mt-4 w-full bg-cyan-500/20 hover:bg-cyan-500/40 text-cyan-300 border border-cyan-500/40 px-4 py-2 rounded-lg text-xs font-semibold font-mono tracking-wider transition cursor-pointer">RESET GAME</button>
+                        
+                        <canvas id="snakeGame" width="400" height="400" class="w-full h-auto aspect-square rounded-xl game-canvas-style"></canvas>
+                        <canvas id="catchGame" width="400" height="400" class="w-full h-auto aspect-square rounded-xl game-canvas-style hidden"></canvas>
+
+                        <button onclick="triggerReset()" id="game-b1" class="mt-4 w-full bg-cyan-500/20 hover:bg-cyan-500/40 text-cyan-300 border border-cyan-500/40 px-4 py-2 rounded-lg text-xs font-semibold font-mono tracking-wider transition cursor-pointer">RESET GAME</button>
                         <div class="hidden"><a href="#" id="game-b2"></a></div>
                     </div>
                 </div>
 
                 <div class="w-full md:w-1/2 flex items-center justify-center">
-                    <img src="astro2.png" alt="Gaming Astronaut" class="w-full max-w-[360px] sm:max-w-[400px] h-auto object-contain float-astronaut">
+                    <img id="gameMascot" src="astro2.png" alt="Gaming Astronaut" class="w-full max-w-[360px] sm:max-w-[400px] h-auto object-contain float-astronaut">
                 </div>
             </div>
         </section>
 
-        <!-- 3. SECTION MEME -->
         <section id="meme" class="min-h-screen flex flex-col items-center justify-center px-4 max-w-6xl mx-auto py-24">
             <div class="text-center max-w-3xl mb-12">
                 <span id="meme-tag" class="text-[10px] tracking-widest uppercase font-semibold text-cyan-400 border border-cyan-500/30 bg-cyan-950/30 px-3 py-1 rounded-full mb-6">Meme Zone</span>
@@ -266,7 +269,6 @@
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6 w-full">
-                <!-- Kotak 1 -->
                 <div class="group bg-gray-950/40 border border-gray-900 rounded-2xl overflow-hidden aspect-square flex flex-col justify-between p-4 backdrop-blur-sm hover:border-cyan-500/40 transition duration-300 shadow-2xl">
                     <div class="w-full h-[75%] bg-gray-900/60 rounded-xl flex items-center justify-center overflow-hidden border border-gray-800/30 relative">
                         <img src="meme1.jpg" alt="Meme 1" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-50 group-hover:opacity-100">
@@ -277,7 +279,6 @@
                         <svg class="w-4 h-4 text-gray-500 group-hover:text-cyan-400 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"/></svg>
                     </div>
                 </div>
-                <!-- Kotak 2 -->
                 <div class="group bg-gray-950/40 border border-gray-900 rounded-2xl overflow-hidden aspect-square flex flex-col justify-between p-4 backdrop-blur-sm hover:border-cyan-500/40 transition duration-300 shadow-2xl">
                     <div class="w-full h-[75%] bg-gray-900/60 rounded-xl flex items-center justify-center overflow-hidden border border-gray-800/30 relative">
                         <img src="meme2.jpg" alt="Meme 2" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-50 group-hover:opacity-100">
@@ -288,7 +289,6 @@
                         <svg class="w-4 h-4 text-gray-500 group-hover:text-cyan-400 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"/></svg>
                     </div>
                 </div>
-                <!-- Kotak 3 -->
                 <div class="group bg-gray-950/40 border border-gray-900 rounded-2xl overflow-hidden aspect-square flex flex-col justify-between p-4 backdrop-blur-sm hover:border-cyan-500/40 transition duration-300 shadow-2xl">
                     <div class="w-full h-[75%] bg-gray-900/60 rounded-xl flex items-center justify-center overflow-hidden border border-gray-800/30 relative">
                         <img src="meme3.jpg" alt="Meme 3" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-50 group-hover:opacity-100">
@@ -299,7 +299,6 @@
                         <svg class="w-4 h-4 text-gray-500 group-hover:text-cyan-400 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"/></svg>
                     </div>
                 </div>
-                <!-- Kotak 4 -->
                 <div class="group bg-gray-950/40 border border-gray-900 rounded-2xl overflow-hidden aspect-square flex flex-col justify-between p-4 backdrop-blur-sm hover:border-cyan-500/40 transition duration-300 shadow-2xl">
                     <div class="w-full h-[75%] bg-gray-900/60 rounded-xl flex items-center justify-center overflow-hidden border border-gray-800/30 relative">
                         <img src="meme4.jpg" alt="Meme 4" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-50 group-hover:opacity-100">
@@ -310,7 +309,6 @@
                         <svg class="w-4 h-4 text-gray-500 group-hover:text-cyan-400 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"/></svg>
                     </div>
                 </div>
-                <!-- Kotak 5 -->
                 <div class="group bg-gray-950/40 border border-gray-900 rounded-2xl overflow-hidden aspect-square flex flex-col justify-between p-4 backdrop-blur-sm hover:border-cyan-500/40 transition duration-300 shadow-2xl">
                     <div class="w-full h-[75%] bg-gray-900/60 rounded-xl flex items-center justify-center overflow-hidden border border-gray-800/30 relative">
                         <img src="meme5.jpg" alt="Meme 5" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-50 group-hover:opacity-100">
@@ -321,7 +319,6 @@
                         <svg class="w-4 h-4 text-gray-500 group-hover:text-cyan-400 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"/></svg>
                     </div>
                 </div>
-                <!-- Kotak 6 -->
                 <div class="group bg-gray-950/40 border border-gray-900 rounded-2xl overflow-hidden aspect-square flex flex-col justify-between p-4 backdrop-blur-sm hover:border-cyan-500/40 transition duration-300 shadow-2xl">
                     <div class="w-full h-[75%] bg-gray-900/60 rounded-xl flex items-center justify-center overflow-hidden border border-gray-800/30 relative">
                         <img src="meme6.jpg" alt="Meme 6" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-50 group-hover:opacity-100">
@@ -332,7 +329,6 @@
                         <svg class="w-4 h-4 text-gray-500 group-hover:text-cyan-400 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"/></svg>
                     </div>
                 </div>
-                <!-- Kotak 7 -->
                 <div class="group bg-gray-950/40 border border-gray-900 rounded-2xl overflow-hidden aspect-square flex flex-col justify-between p-4 backdrop-blur-sm hover:border-cyan-500/40 transition duration-300 shadow-2xl">
                     <div class="w-full h-[75%] bg-gray-900/60 rounded-xl flex items-center justify-center overflow-hidden border border-gray-800/30 relative">
                         <img src="meme7.jpg" alt="Meme 7" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-50 group-hover:opacity-100">
@@ -343,7 +339,6 @@
                         <svg class="w-4 h-4 text-gray-500 group-hover:text-cyan-400 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"/></svg>
                     </div>
                 </div>
-                <!-- Kotak 8 -->
                 <div class="group bg-gray-950/40 border border-gray-900 rounded-2xl overflow-hidden aspect-square flex flex-col justify-between p-4 backdrop-blur-sm hover:border-cyan-500/40 transition duration-300 shadow-2xl">
                     <div class="w-full h-[75%] bg-gray-900/60 rounded-xl flex items-center justify-center overflow-hidden border border-gray-800/30 relative">
                         <img src="meme8.jpg" alt="Meme 8" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-50 group-hover:opacity-100">
@@ -357,7 +352,6 @@
             </div>
         </section>
 
-        <!-- 4. SECTION CONTENT FACTORY -->
         <section id="factory" class="min-h-screen flex flex-col md:flex-row items-center justify-between max-w-5xl mx-auto px-6 py-24 gap-12">
             <div class="w-full md:w-1/2 flex flex-col justify-center text-left">
                 <span id="factory-tag" class="w-max text-[10px] tracking-widest uppercase font-bold text-emerald-400 border border-emerald-500/30 bg-emerald-950/30 px-3 py-1 rounded-full mb-4">Hyperdrome Platform</span>
@@ -420,7 +414,6 @@
             </div>
         </section>
 
-        <!-- 5. SECTION COMMUNITY -->
         <section id="community" class="min-h-screen flex flex-col md:flex-row items-center justify-between max-w-5xl mx-auto px-6 py-24 gap-12 overflow-hidden">
             <div class="w-full md:w-1/2 flex flex-col justify-center text-left">
                 <span id="community-tag" class="w-max text-[10px] tracking-widest uppercase font-semibold text-cyan-400 border border-cyan-500/30 bg-cyan-950/30 px-3 py-1 rounded-full mb-6">Hyper-Hub</span>
@@ -439,7 +432,6 @@
 
     </main>
 
-    <!-- FOOTER -->
     <footer class="w-full max-w-7xl mx-auto px-6 py-8 border-t border-gray-900/40 flex flex-col items-center space-y-5 relative z-10">
         <div class="flex items-center space-x-2 text-gray-400 opacity-80 cursor-pointer" onclick="scrollToSection('home')">
             <svg class="w-5 h-5 text-cyan-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -459,20 +451,25 @@
         </div>
     </footer>
 
-    <!-- INTERAKSI JAVASCRIPT -->
     <script>
-        // PRE-LOAD IMAGE OBJECTS UNTUK GAME CANVAS
+        // PRE-LOAD IMAGE OBJECTS FOR CANVAS RENDERING
         const snakeHeadImg = new Image();
-        snakeHeadImg.src = '6baTg-xP_400x400 (1).jpg'; // Logo Pertama untuk Ular
+        snakeHeadImg.src = '6baTg-xP_400x400 (1).jpg'; 
 
         const snakeAppleImg = new Image();
-        snakeAppleImg.src = 'f5cl2Syx_400x400 (1).jpg'; // Logo Kedua untuk Apple Makanan
+        snakeAppleImg.src = 'f5cl2Syx_400x400 (1).jpg'; 
+
+        const astroBasketImg = new Image();
+        astroBasketImg.src = 'astro4.png'; 
+
+        const hypeCoinImg = new Image();
+        hypeCoinImg.src = 'hyper.png'; 
 
         const translations = {
             en: {
                 flag: "🇬🇧", label: "English", direction: "ltr",
                 nav: { home: "Home", game: "Game", meme: "Meme", factory: "Content Factory", community: "Community", video: "Content Video" },
-                game: { tag: "Gaming Arena", title: "Web3 Gaming Ecosystem|", desc: "Play the HTML Snake game below using your Keyboard Arrow Keys!", b1: "RESET GAME", b2: "" },
+                game: { tag: "Gaming Arena", title: "Web3 Gaming Ecosystem|", desc: "Choose your game mode and dominate the cyber leaderboard!", b1: "RESET GAME", b2: "" },
                 meme: { tag: "Meme Zone", title: "The Capital of Laughs|", desc: "Track, trade, and explore the most viral tokens driving culture.", b1: "", b2: "" },
                 factory: { tag: "Hyperdrome Platform", title: "Content Factory|", desc: "MAKE MEMES. \\n CREATE THREADS. \\n BE REWARDED.", b1: "MEME", b2: "THREAD" },
                 community: { tag: "Hyper-Hub", title: "Join the Global Guild|", desc: "Connect with thousands of builders, traders, and gamers globally.", b1: "Join Discord", b2: "Twitter / X" }
@@ -480,7 +477,7 @@
             ja: {
                 flag: "🇯🇵", label: "日本語", direction: "ltr",
                 nav: { home: "ホーム", game: "ゲーム", meme: "ミーム", factory: "コンテンツ工場", community: "コミュニティ", video: "動画コンテンツ" },
-                game: { tag: "ゲームアリーナ", title: "Web3 ゲーム環境|", desc: "矢印キーを使って下のスネークゲームをプレイしてください！", b1: "ゲームリセット", b2: "" },
+                game: { tag: "ゲームアリーナ", title: "Web3 ゲーム環境|", desc: "ゲームモードを選択して、サイバーリーダーボードを支配しましょう！", b1: "ゲームリセット", b2: "" },
                 meme: { tag: "ミームゾーン", title: "笑いの中心地へようこそ|", desc: "文化を動かす最もバイラルなトークンを追跡、取引、探索。", b1: "", b2: "" },
                 factory: { tag: "Hyperdrome プラットフォーム", title: "コンテンツファクトリー|", desc: "ミームを作る。 \\n スレッドを立てる。 \\n 報酬を得る。", b1: "ミーム", b2: "スレッド" },
                 community: { tag: "ハイパーハブ", title: "グローバルギルドに参加|", desc: "世界中の何千もの開発者やゲーマーとつながろう。", b1: "Discordに参加", b2: "Twitter / X" }
@@ -488,7 +485,7 @@
             zh: {
                 flag: "🇨🇳", label: "中文", direction: "ltr",
                 nav: { home: "首页", game: "游戏", meme: "模因", factory: "内容工厂", community: "社区", video: "视频内容" },
-                game: { tag: "游戏竞技场", title: "Web3 游戏生态|", desc: "使用键盘方向键操控，马上体验经典的贪吃蛇 HTML 游戏！", b1: "重置游戏", b2: "" },
+                game: { tag: "游戏竞技场", title: "Web3 游戏生态|", desc: "选择您的游戏模式，称霸网络排行榜！", b1: "重置游戏", b2: "" },
                 meme: { tag: "模因专区", title: "幽默与财富的聚集地|", desc: "追踪、交易并探索引领文化潮流的最具病毒性代币。", b1: "", b2: "" },
                 factory: { tag: "Hyperdrome 平台", title: "内容工厂|", desc: "制作模因。 \\n 创建推特长文。 \\n 获得奖励。", b1: "模因", b2: "长文" },
                 community: { tag: "超级中心", title: "加入全球公会网络|", desc: "与全球数千名开发者、交易员 and 游戏玩家建立联系。", b1: "加入 Discord", b2: "Twitter / X" }
@@ -496,15 +493,15 @@
             ar: {
                 flag: "🇸🇦", label: "العربية", direction: "rtl",
                 nav: { home: "الرئيسية", game: "الألعاب", meme: "ميمي", factory: "مصنع المحتوى", community: "المجتمع", video: "محتوى الفيديو" },
-                game: { tag: "ساحة الألعاب", title: "نظام ألعاب Web3|", desc: "العب لعبة الثعبان أدناه باستخدام أسهم لوحة المفاتيح الشخصية!", b1: "إعادة ضبط اللعبة", b2: "" },
+                game: { tag: "ساحة الألعاب", title: "نظام ألعاب Web3|", desc: "اختر وضع اللعبة الخاص بك وسيطر على لوحة المتصدرين السيبرانية!", b1: "إعادة ضبط اللعبة", b2: "" },
                 meme: { tag: "منطقة Mمe", title: "عاصمة الضحك والعملات|", desc: "تتبع، تداول، واستكشف أكثر الرموز انتشاراً.", b1: "", b2: "" },
-                factory: { tag: "منصة Hyperdrome", title: "مصنع المحتوى|", desc: "اصنع الميمز. \\n أنشئ الثريدz. \\n احصل على المكافآت.", b1: "ميم", b2: "ثريد" },
+                factory: { tag: "منصة Hyperdrome", title: "مصنع المحتوى|", desc: "اصنع الميمز. \\n أنشئ الثrيدz. \\n احصل على المكافآت.", b1: "ميم", b2: "ثريد" },
                 community: { tag: "المركز الفائق", title: "انضم إلى التحالف العالمي|", desc: "تواصل مع الآلاف من المطورين، المتداولين، واللاعبين.", b1: "انضم إلى ديسكورد", b2: "تويتر / X" }
             },
             fr: {
                 flag: "🇫🇷", label: "Français", direction: "ltr",
                 nav: { home: "Accueil", game: "Jeux", meme: "Meme", factory: "Usine à Contenu", community: "Communauté", video: "Contenu Vidéo" },
-                game: { tag: "Arène de Jeu", title: "Écosystème de Jeu Web3|", desc: "Jouez au jeu de serpent HTML ci-dessous avec vos touches directionnelles !", b1: "RESET GAME", b2: "" },
+                game: { tag: "Arène de Jeu", title: "Écosystème de Jeu Web3|", desc: "Choisissez votre mode de jeu et dominez le classement cyber !", b1: "RESET GAME", b2: "" },
                 meme: { tag: "Zone Meme", title: "La Capitale de l'Humour|", desc: "Suivez, échangez et explorez les jetons les plus viraux de la culture.", b1: "", b2: "" },
                 factory: { tag: "Plateforme Hyperdrome", title: "Usine à Contenu|", desc: "CRÉEZ DES MEMES. \\n FAITES DES THREADS. \\n GAGNEZ DES RÉCOMPENSES.", b1: "MEME", b2: "THREAD" },
                 community: { tag: "Hyper-Hub", title: "Rejoignez la Guilde Globale|", desc: "Connectez-vous avec des milliers de bâtisseurs, traders et gamers.", b1: "Rejoindre Discord", b2: "Twitter / X" }
@@ -513,7 +510,7 @@
 
         let currentLang = 'en';
 
-        // --- ENGINE KONTROL AUDIO ---
+        // --- BACKGROUND AUDIO CONTROLLER ---
         function toggleMusic() {
             const music = document.getElementById("bgMusic");
             const iconMute = document.getElementById("iconMute");
@@ -525,14 +522,14 @@
                 music.play().then(() => {
                     iconMute.classList.add("hidden"); iconPlaying.classList.remove("hidden");
                     ping.classList.add("animate-ping", "opacity-100"); btn.classList.add("text-cyan-400", "border-cyan-500/50");
-                }).catch(err => { console.log("Interaksi diperlukan browser."); });
+                }).catch(err => { console.log("Browser requires user initialization gesture."); });
             } else {
                 music.pause(); iconMute.classList.remove("hidden"); iconPlaying.classList.add("hidden");
                 ping.classList.remove("animate-ping", "opacity-100"); btn.classList.remove("text-cyan-400", "border-cyan-500/50");
             }
         }
 
-        // --- ENGINE TYPEWRITER ---
+        // --- TYPEWRITER HERO TELEMETRY ENGINE ---
         const typewriterWords = [
             "Defi that thinks for you",
             "Trade with words, not clicks",
@@ -546,6 +543,7 @@
         function playTypewriter() {
             const currentSentence = typewriterWords[wordIndex];
             const textElement = document.getElementById("typewriterText");
+            if (!textElement) return;
             if (isDeleting) {
                 textElement.innerText = currentSentence.substring(0, charIndex - 1); charIndex--;
             } else {
@@ -615,7 +613,7 @@
         });
 
         // ==========================================
-        // ENGINE BACKGROUND BLOCKCHAIN & COINS
+        // AMBIENT BACKGROUND BLOCKCHAIN CONSTELLATION
         // ==========================================
         const bcCanvas = document.getElementById("blockchainCanvas"); const bcCtx = bcCanvas.getContext("2d");
         let nodes = []; const cryptoLogos = ["BTC", "ETH", "BNB", "SOL", "HYPE"];
@@ -657,30 +655,113 @@
         }
         requestAnimationFrame(drawBlockchainNetwork);
 
+
         // ==========================================================
-        // ENGINE GAME SNAKE (LOGO RENDERING DYNAMIC UPDATE)
+        // ARCADE VIEWPORT TOGGLE MANAGER & TRACKING DATA
+        // ==========================================================
+        let currentGameMode = 'snake'; 
+        let snakeHighScore = 0;
+        let catchHighScore = 0;
+        
+        function switchGameMode(mode) {
+            currentGameMode = mode;
+            const snakeCanvas = document.getElementById("snakeGame");
+            const catchCanvas = document.getElementById("catchGame");
+            const tabSnake = document.getElementById("tabSnake");
+            const tabCatch = document.getElementById("tabCatch");
+            const controlTxt = document.getElementById("gameControls");
+            const mascotImg = document.getElementById("gameMascot");
+            const scoreEl = document.getElementById("gameScore");
+
+            if (mode === 'snake') {
+                snakeCanvas.classList.remove("hidden");
+                catchCanvas.classList.add("hidden");
+                tabSnake.className = "px-5 py-2 text-xs font-bold font-mono tracking-wider rounded-lg border border-cyan-400 bg-cyan-500/20 text-cyan-300 cursor-pointer transition";
+                tabCatch.className = "px-5 py-2 text-xs font-bold font-mono tracking-wider rounded-lg border border-gray-800 bg-gray-950/40 text-gray-400 hover:text-white cursor-pointer transition";
+                controlTxt.innerText = "CONTROL: ARROW KEYS";
+                mascotImg.src = "astro2.png";
+                scoreEl.innerText = score;
+            } else {
+                snakeCanvas.classList.add("hidden");
+                catchCanvas.classList.remove("hidden");
+                tabCatch.className = "px-5 py-2 text-xs font-bold font-mono tracking-wider rounded-lg border border-cyan-400 bg-cyan-500/20 text-cyan-300 cursor-pointer transition";
+                tabSnake.className = "px-5 py-2 text-xs font-bold font-mono tracking-wider rounded-lg border border-gray-800 bg-gray-950/40 text-gray-400 hover:text-white cursor-pointer transition";
+                controlTxt.innerText = "CONTROL: A / D or LEFT / RIGHT";
+                mascotImg.src = "astro4.png"; 
+                scoreEl.innerText = catchScore;
+                resetCatchGame();
+            }
+        }
+
+        function triggerReset() {
+            if (currentGameMode === 'snake') { resetGame(); } 
+            else { resetCatchGame(); }
+        }
+
+        // UNIVERSAL CANVAS OVERLAY CANVAS FOR GAME OVER DISPLAY (ENGLISH VERSION)
+        function drawGameOverUI(targetCtx, targetWidth, targetHeight, currentScore, targetHighScore) {
+            targetCtx.fillStyle = "rgba(2, 5, 12, 0.88)";
+            targetCtx.fillRect(0, 0, targetWidth, targetHeight);
+
+            targetCtx.save();
+            targetCtx.textAlign = "center";
+            
+            // Text GAME OVER Title
+            targetCtx.font = "bold 34px 'Inter', sans-serif";
+            targetCtx.fillStyle = "#ef4899"; 
+            targetCtx.shadowBlur = 15; targetCtx.shadowColor = "#ec4899";
+            targetCtx.fillText("GAME OVER", targetWidth / 2, 150);
+
+            // Current Session Score
+            targetCtx.shadowBlur = 0;
+            targetCtx.font = "600 16px monospace"; targetCtx.fillStyle = "#e2e8f0";
+            targetCtx.fillText(`YOUR SCORE : ${currentScore}`, targetWidth / 2, 205);
+
+            // High Score Records
+            targetCtx.font = "bold 16px monospace"; targetCtx.fillStyle = "#34d399"; 
+            targetCtx.fillText(`HIGH SCORE : ${targetHighScore}`, targetWidth / 2, 240);
+
+            // Re-engagement Guideline Directive
+            targetCtx.font = "12px monospace"; targetCtx.fillStyle = "#94a3b8";
+            targetCtx.fillText("Click 'RESET GAME' button to try again", targetWidth / 2, 300);
+            
+            targetCtx.restore();
+        }
+
+
+        // ==========================================================
+        // GAME ENGINE 1: COGNITIVE CRYPTO SNAKE ARCADE
         // ==========================================================
         const canvas = document.getElementById("snakeGame"); const ctx = canvas.getContext("2d");
         const scoreEl = document.getElementById("gameScore"); const grid = 20;
         let count = 0; let score = 0;
+        let isSnakeGameOver = false;
+        
         let snake = { x: 160, y: 160, dx: grid, dy: 0, cells: [], maxCells: 4 }; let apple = { x: 320, y: 320 };
         function getRandomInt(min, max) { return Math.floor(Math.random() * (max - min)) + min; }
 
         function gameLoop() {
-            requestAnimationFrame(gameLoop); if (++count < 6) { return; } count = 0; ctx.clearRect(0,0,canvas.width,canvas.height);
+            requestAnimationFrame(gameLoop); 
+            if (currentGameMode !== 'snake') return; 
+            
+            // Intercept render matrix to push Game Over layout screen
+            if (isSnakeGameOver) {
+                drawGameOverUI(ctx, canvas.width, canvas.height, score, snakeHighScore);
+                return;
+            }
+            
+            if (++count < 6) { return; } count = 0; ctx.clearRect(0,0,canvas.width,canvas.height);
             snake.x += snake.dx; snake.y += snake.dy;
             if (snake.x < 0) { snake.x = canvas.width - grid; } else if (snake.x >= canvas.width) { snake.x = 0; }
             if (snake.y < 0) { snake.y = canvas.height - grid; } else if (snake.y >= canvas.height) { snake.y = 0; }
             snake.cells.unshift({x: snake.x, y: snake.y}); if (snake.cells.length > snake.maxCells) { snake.cells.pop(); }
 
-            // Menggambar Gambar Target yang Dilahap (Menggunakan Gambar f5cl2Syx_400x400 (1).jpg)
             if (snakeAppleImg.complete) {
                 ctx.drawImage(snakeAppleImg, apple.x, apple.y, grid, grid);
             } else {
-                ctx.fillStyle = '#f43f5e'; ctx.fillRect(apple.x, apple.y, grid-1, grid-1);
+                ctx.fillRect(apple.x, apple.y, grid-1, grid-1);
             }
 
-            // Menggambar Seluruh Tubuh Ular Berupa Gambar Logo (Menggunakan Gambar 6baTg-xP_400x400 (1).jpg)
             snake.cells.forEach(function(cell, index) {
                 if (snakeHeadImg.complete) {
                     ctx.drawImage(snakeHeadImg, cell.x, cell.y, grid, grid);
@@ -688,27 +769,179 @@
                     ctx.fillStyle = '#22d3ee'; ctx.fillRect(cell.x, cell.y, grid-1, grid-1);
                 }
                 
+                // Collision testing check for ingestible target nodes
                 if (cell.x === apple.x && cell.y === apple.y) {
-                    snake.maxCells++; score += 10; scoreEl.innerText = score;
+                    snake.maxCells++; score += 10; 
+                    if (score > snakeHighScore) { snakeHighScore = score; }
+                    scoreEl.innerText = score;
                     apple.x = getRandomInt(0, 20) * grid; apple.y = getRandomInt(0, 20) * grid;
                 }
-                for (let i = index + 1; i < snake.cells.length; i++) { if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) { resetGame(); } }
+                
+                // Self-intersection tracking to flag self-destructive game states
+                for (let i = index + 1; i < snake.cells.length; i++) { 
+                    if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) { 
+                        isSnakeGameOver = true; 
+                    } 
+                }
             });
         }
+        
         function resetGame() {
-            score = 0; scoreEl.innerText = score; snake.x = 160; snake.y = 160; snake.cells = []; snake.maxCells = 4; snake.dx = grid; snake.dy = 0;
+            score = 0; 
+            isSnakeGameOver = false;
+            if(currentGameMode === 'snake') scoreEl.innerText = score; 
+            snake.x = 160; snake.y = 160; snake.cells = []; snake.maxCells = 4; snake.dx = grid; snake.dy = 0;
             apple.x = getRandomInt(0, 20) * grid; apple.y = getRandomInt(0, 20) * grid;
         }
-        window.addEventListener('keydown', function(e) { if([37, 38, 39, 40].indexOf(e.keyCode) > -1) { e.preventDefault(); } }, false);
+
+
+        // ==========================================================
+        // GAME ENGINE 2: COSMIC BASKET ASTRONOT CATCH COIN
+        // ==========================================================
+        const catchCanvas = document.getElementById("catchGame");
+        const catchCtx = catchCanvas.getContext("2d");
+        
+        let catchScore = 0;
+        let isCatchGameOver = false;
+
+        // Custom scaled parameters for upscale resolution request
+        const playerWidth = 95;  
+        const playerHeight = 95; 
+        const coinSize = 42;     
+
+        let playerX = 150;
+        let coinX = getRandomInt(20, 340);
+        let coinY = -50;
+        let coinSpeed = 3.5;
+        
+        let candles = [];
+        for(let i=0; i < 15; i++) {
+            candles.push({
+                x: i * 30, open: getRandomInt(120, 280), close: getRandomInt(120, 280),
+                high: getRandomInt(80, 120), low: getRandomInt(280, 340), isGreen: Math.random() > 0.5
+            });
+        }
+
+        let leftPressed = false;
+        let rightPressed = false;
+
+        function resetCatchGame() {
+            catchScore = 0;
+            isCatchGameOver = false;
+            if(currentGameMode === 'catch') scoreEl.innerText = catchScore;
+            playerX = 150;
+            coinX = getRandomInt(20, 340);
+            coinY = -50;
+            coinSpeed = 3.5;
+        }
+
+        function catchGameLoop() {
+            requestAnimationFrame(catchGameLoop);
+            if (currentGameMode !== 'catch') return;
+
+            if (isCatchGameOver) {
+                drawGameOverUI(catchCtx, catchCanvas.width, catchCanvas.height, catchScore, catchHighScore);
+                return;
+            }
+
+            // Delta horizontal positioning
+            if (leftPressed && playerX > 0) { playerX -= 6.5; }
+            if (rightPressed && playerX < catchCanvas.width - playerWidth) { playerX += 6.5; }
+
+            coinY += coinSpeed;
+
+            // Geometry bounding-box interception equations
+            if (coinY + coinSize >= 315 && coinY <= 355 && coinX + coinSize >= playerX + 15 && coinX <= playerX + playerWidth - 15) {
+                catchScore += 10;
+                if (catchScore > catchHighScore) { catchHighScore = catchScore; }
+                scoreEl.innerText = catchScore;
+                coinY = -50;
+                coinX = getRandomInt(20, 340);
+                if (coinSpeed < 11) coinSpeed += 0.35; 
+            } 
+            else if (coinY > catchCanvas.height) {
+                isCatchGameOver = true; 
+            }
+
+            candles.forEach(c => {
+                c.x -= 0.5;
+                if(c.x < -30) {
+                    c.x = catchCanvas.width; c.open = getRandomInt(120, 280); c.close = getRandomInt(120, 280);
+                    c.high = getRandomInt(80, 120); c.low = getRandomInt(280, 340); c.isGreen = Math.random() > 0.4;
+                }
+            });
+
+            catchCtx.clearRect(0, 0, catchCanvas.width, catchCanvas.height);
+
+            // Draw Animated Procedural Candlestick Background Core
+            candles.forEach(c => {
+                catchCtx.strokeStyle = c.isGreen ? 'rgba(16, 185, 129, 0.22)' : 'rgba(239, 68, 68, 0.22)';
+                catchCtx.fillStyle = c.isGreen ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)';
+                catchCtx.lineWidth = 1.5;
+                catchCtx.beginPath(); catchCtx.moveTo(c.x + 8, c.high); catchCtx.lineTo(c.x + 8, c.low); catchCtx.stroke();
+                let topY = Math.min(c.open, c.close); let heightY = Math.abs(c.open - c.close);
+                catchCtx.fillRect(c.x, topY, 16, Math.max(heightY, 4));
+            });
+
+            // Target Platform HUD Indicators
+            catchCtx.save();
+            catchCtx.font = "bold 13px monospace"; catchCtx.fillStyle = "#22d3ee";
+            catchCtx.shadowBlur = 6; catchCtx.shadowColor = "#06b6d4";
+            catchCtx.fillText("HDROME/HYPE", 15, 25);
+            catchCtx.restore();
+
+            // Falling Target Object Rendering Nodes
+            if (hypeCoinImg.complete) {
+                catchCtx.drawImage(hypeCoinImg, coinX, coinY, coinSize, coinSize);
+            } else {
+                catchCtx.fillStyle = '#fbbf24'; catchCtx.beginPath();
+                catchCtx.arc(coinX + (coinSize/2), coinY + (coinSize/2), coinSize/2, 0, Math.PI * 2); catchCtx.fill();
+            }
+
+            // User Interacted Player Entity Nodes
+            if (astroBasketImg.complete) {
+                catchCtx.drawImage(astroBasketImg, playerX, 305, playerWidth, playerHeight);
+            } else {
+                catchCtx.fillStyle = '#06b6d4'; catchCtx.fillRect(playerX, 320, playerWidth, playerHeight - 15);
+            }
+        }
+
+
+        // ==========================================================
+        // KEYBOARD EVENT SYSTEM MANAGERS (MUTED ANTI-SCROLL IMPLEMENTED)
+        // ==========================================================
+        // Force fully intercept desktop default browser window layout scrolls on gaming sessions
+        window.addEventListener('keydown', function(e) {
+            if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
         document.addEventListener('keydown', function(e) {
-            if (e.which === 37 && snake.dx === 0) { snake.dx = -grid; snake.dy = 0; }
-            else if (e.which === 38 && snake.dy === 0) { snake.dy = -grid; snake.dx = 0; } 
-            else if (e.which === 39 && snake.dx === 0) { snake.dx = grid; snake.dy = 0; }
-            else if (e.which === 40 && snake.dy === 0) { snake.dy = grid; snake.dx = 0; }
+            if (currentGameMode === 'snake' && !isSnakeGameOver) {
+                if (e.which === 37 && snake.dx === 0) { snake.dx = -grid; snake.dy = 0; }
+                else if (e.which === 38 && snake.dy === 0) { snake.dy = -grid; snake.dx = 0; } 
+                else if (e.which === 39 && snake.dx === 0) { snake.dx = grid; snake.dy = 0; }
+                else if (e.which === 40 && snake.dy === 0) { snake.dy = grid; snake.dx = 0; }
+            }
+            if (currentGameMode === 'catch' && !isCatchGameOver) {
+                if (e.which === 37 || e.which === 65) { leftPressed = true; } 
+                if (e.which === 39 || e.which === 68) { rightPressed = true; } 
+            }
+        });
+
+        document.addEventListener('keyup', function(e) {
+            if (currentGameMode === 'catch') {
+                if (e.which === 37 || e.which === 65) { leftPressed = false; }
+                if (e.which === 39 || e.which === 68) { rightPressed = false; }
+            }
         });
 
         window.onload = function() {
-            changeLanguage('en'); playTypewriter(); requestAnimationFrame(gameLoop);
+            changeLanguage('en'); 
+            playTypewriter(); 
+            requestAnimationFrame(gameLoop);      
+            requestAnimationFrame(catchGameLoop); 
         };
     </script>
 </body>
